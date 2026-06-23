@@ -1,0 +1,10 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    
+    <!-- أحجام النصوص المتجاوبة -->
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="text_size_large">28sp</dimen>
+    <dimen name="text_size_xlarge">36sp</dimen>
+    <dimen name="text_size_button">20sp</dimen>
+</resources>

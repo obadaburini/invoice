@@ -1,0 +1,101 @@
+شرح واجهة تطبيق الفواتير (ملف واحد XML وملف واحد Java)
+
+1) نظرة عامة
+- الواجهة كلها موجودة في ملف XML واحد: res/layout/activity_main.xml
+- منطق العرض في ملف Java واحد: java/com/example/invoice/MainActivity.java
+- لا يوجد تنقل (Fragments/NavHost). لا توجد قوائم (Menu). كل شيء بسيط ومباشر.
+- الواجهة تدعم الاتجاه من اليمين إلى اليسار RTL.
+
+2) شرح activity_main.xml
+
+أ. الجذر والأسماء
+- الجذر: ConstraintLayout
+- xmlns:android  => مساحة الأسماء الافتراضية لعناصر أندرويد
+- xmlns:app      => خصائص مكتبات الدعم مثل Material وConstraint
+- xmlns:tools    => خصائص خاصة بالأدوات لا تؤثر وقت التشغيل
+- tools:context  => معلومة للأدوات بأن هذا التخطيط مرتبط بـ MainActivity
+
+ب. الشريط العلوي (AppBarLayout + MaterialToolbar)
+- AppBarLayout مثبت أعلى الشاشة عبر app:layout_constraintTop_toTopOf="parent"
+- MaterialToolbar داخل AppBarLayout بخلفية زرقاء داكنة (dark_blue) ونص أبيض
+- عنوان الشريط يأتي من strings.xml (app_name)
+
+ج. محتوى الواجهة (NestedScrollView)
+- NestedScrollView بعرض/ارتفاع 0dp ويُحدد بواسطة قيود Constraint (Top/Bottom/Start/End)
+- fillViewport=true لملء الشاشة حتى لو المحتوى قليل
+- خلفية بيضاء للمحتوى
+
+د. الحاوية الداخلية (ConstraintLayout داخلي)
+- layoutDirection="rtl" لدعم العربية (يمين إلى يسار)
+- padding=16dp كهامش داخلي عام
+
+هـ. صف البطاقات (الإيرادات/المصروفات/الصافي)
+- LinearLayout أفقي يضم 3 بطاقات
+- كل بطاقة: MaterialCardView بعرض 0dp + layout_weight=1 لتقسيم المساحة بالتساوي
+- خصائص البطاقة: خلفية زرقاء فاتحة، حواف دائرية 16dp، ارتفاع أدنى 96dp، ظل بسيط، إطار خفيف
+- داخل البطاقة: ConstraintLayout مع padding=12dp
+- الأيقونة: ImageView داخل دائرة بيضاء (bg_circle_white) مثبتة في الزاوية العليا اليمنى
+- العنوان: TextView بعرض 0dp (عرض مرن) يثبت Start عند بداية الحاوية وEnd قبل الأيقونة، مع autoSize لضبط الخط
+- القيمة: TextView أسفل العنوان مباشرة، autoSize لتكبير/تصغير النص داخل البطاقة
+  • الإيرادات باللون الأخضر مع علامة + (مثال: +1,500)
+  • المصروفات باللون الأحمر مع علامة - (مثال: -350)
+  • الصافي باللون الأسود افتراضياً (يمكن تغييره لاحقاً برمجياً)
+
+و. صف الأزرار الرئيسية
+- LinearLayout أفقي بوزن إجمالي weightSum=2
+- زر "إضافة فاتورة" وزر "إنشاء تقرير PDF": كل زر بعرض 0dp + layout_weight=1 لتقسيم المساحة بالتساوي
+- خصائص تسهل الاستجابة للشاشات الصغيرة: minWidth=0dp, maxLines=1, ellipsize=end
+- زر الإضافة بخلفية زرقاء داكنة ونص أبيض، زر PDF بنمط Outlined بلون أزرق داكن
+
+ز. قسم "آخر الفواتير"
+- TextView عنوان بقيم مظهر من الثيم ونص عريض
+- LinearLayout رأسي يحوي 3 صفوف ثابتة كمثال (Invoice # + الاسم + المبلغ + الحالة)
+- فواصل رفيعة (View بارتفاع 1dp ولون very_light_blue_separator) بين الصفوف
+- الشارات للحالة: bg_chip_light (نص أسود) وbg_chip_dark (نص أبيض)
+
+ح. ملاحظات تخطيطية مهمة
+- استخدام 0dp مع layout_weight داخل LinearLayout يقسّم العرض بالتساوي بين العناصر
+- داخل البطاقات نستخدم 0dp مع قيود Constraint (Start/End) ليصبح النص مرناً ويأخذ مساحة متبقية بجانب الأيقونة
+- autoSizeTextType="uniform" مع min/max يضمن بقاء النص داخل حدود العنصر بشكل جميل
+
+3) شرح MainActivity.java
+
+أ. الحزمة والاستيرادات
+- package com.example.invoice
+- استيراد android.os.Bundle لدورة حياة النشاط
+- استيراد androidx.appcompat.app.AppCompatActivity كأساس للنشاط
+- استيراد ActivityMainBinding (ViewBinding مولّد من activity_main.xml)
+
+ب. الحقول والصنف
+- class MainActivity extends AppCompatActivity: نشاط رئيسي يعرض الواجهة
+- private ActivityMainBinding binding: مرجع للوصول الآمن للعناصر في XML بدون findViewById
+
+ج. onCreate
+- super.onCreate(savedInstanceState): تهيئة أساسية للنشاط
+- binding = ActivityMainBinding.inflate(getLayoutInflater()): نفخ ملف الواجهة وإنشاء كائن الربط
+- setContentView(binding.getRoot()): تعيين محتوى الشاشة للجذر الذي أعاده الـ Binding
+- setSupportActionBar(binding.toolbar): جعل Toolbar من الواجهة هو الـ ActionBar للنشاط
+- لا يوجد تنقل (NavController/Fragments) ولا قوائم (Menu) للحفاظ على البساطة
+
+د. تفعيل ViewBinding (مهم)
+- تأكد من تفعيل ViewBinding في build.gradle للموديول (app):
+
+android {
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+4) الموارد (Resources) المستخدمة
+- colors.xml: تعريف الألوان (dark_blue, light_blue_background, very_light_blue_separator, green, red, black, white)
+- strings.xml: اسم التطبيق، عناوين البطاقات، عناوين الأقسام، نصوص الأزرار
+- drawable (Vector/Shapes): أيقونات (attach_money, receipt_long, bar_chart, add, picture_as_pdf) وخلفيات (bg_circle_white, bg_chip_light, bg_chip_dark)
+
+5) ملاحظات عامة
+- التصميم يعتمد على الأزرق/الأبيض مع نصوص بالأسود كما طُلِب
+- البطاقات الثلاث متساوية الحجم بفضل الأوزان والارتفاع الأدنى
+- الأزرار تستجيب لأحجام الشاشات الضيقة مع قصّ النص بأناقة
+- قسم "آخر الفواتير" ثابت حالياً ويمكن لاحقاً ربطه ببيانات حقيقية أو RecyclerView إذا لزم
+
+انتهى.*** End Patch``` } } } +++ 5 tokens sure.  ***!
+

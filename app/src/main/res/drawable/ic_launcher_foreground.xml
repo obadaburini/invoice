@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    أيقونة التطبيق - الطبقة الأمامية
+    - استخدام الأيقونة الجديدة من IconApp.jpg
+    - تكبير الأيقونة لملء المساحة بالكامل
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="108dp"
+        android:height="108dp"
+        android:gravity="fill">
+        <bitmap
+            android:src="@drawable/ic_launcher_icon"
+            android:gravity="fill"
+            android:tileMode="disabled" />
+    </item>
+</layer-list>

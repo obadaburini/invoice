@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Main Palette -->
+    <color name="blue">#2196F3</color> <!-- Main Blue for buttons and highlights -->
+    <color name="dark_blue">#0D47A1</color> <!-- Corrected name for Toolbar -->
+    <color name="blue_light">#90CAF9</color> <!-- Added for elements like chips -->
+
+    <!-- Backgrounds and Separators -->
+    <color name="light_blue_background">#E3F2FD</color> <!-- Very Light Blue for stat cards -->
+    <color name="light_gray">#F5F5F5</color> <!-- Off-white background -->
+    <color name="very_light_blue_separator">#BBDEFB</color> <!-- For list separators -->
+    <!-- Backward-compat alias (some drawables may still reference blue_dark) -->
+    <color name="blue_dark">@color/dark_blue</color>
+    <!-- Status colors -->
+    <color name="green">#2E7D32</color>
+    <color name="red">#C62828</color>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:title="الرئيسية"
+        android:icon="@android:drawable/ic_menu_view" />
+    <item
+        android:id="@+id/nav_invoices"
+        android:title="الفواتير"
+        android:icon="@android:drawable/ic_menu_agenda" />
+    <item
+        android:id="@+id/nav_customers"
+        android:title="العملاء"
+        android:icon="@android:drawable/ic_menu_myplaces" />
+    <item
+        android:id="@+id/nav_reports"
+        android:title="التقارير"
+        android:icon="@android:drawable/ic_menu_sort_by_size" />
+</menu>
+
